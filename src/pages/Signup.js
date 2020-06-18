@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { signup, signInWithGoogle } from "../helpers/auth";
+import { db, auth } from "../services/firebase";
+import { getNameFromEmail } from "../helpers/utils";
 
 class Signup extends Component {
   state = {
@@ -19,7 +21,14 @@ class Signup extends Component {
     e.preventDefault();
     this.setState({ error: "" });
     try {
-      await signup(this.state.email, this.state.password);
+      await signup(this.state.email, this.state.password).then((user) =>
+        db.ref("users/" + getNameFromEmail(auth().currentUser.email)).set({
+          userEmail: auth().currentUser.email,
+          userName: "",
+          userId: auth().currentUser.uid,
+          userPic: "",
+        })
+      );
     } catch (error) {
       this.setState({
         error: error.message,
@@ -29,7 +38,14 @@ class Signup extends Component {
 
   googleSignIn = async () => {
     try {
-      await signInWithGoogle();
+      await signInWithGoogle().then((user) =>
+        db.ref("users/" + getNameFromEmail(auth().currentUser.email)).set({
+          userEmail: auth().currentUser.email,
+          userName: "",
+          userId: auth().currentUser.uid,
+          userPic: "",
+        })
+      );
     } catch (error) {
       this.setState({ error: error.message });
     }

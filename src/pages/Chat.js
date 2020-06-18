@@ -1,12 +1,18 @@
 import React, { Component } from "react";
 import { auth } from "../services/firebase";
 import { db } from "../services/firebase";
+import { functionFirebase } from "../services/firebase";
+
+//Components
+import Message from "../components/Message/Message";
+import Test from "../components/Test.tsx";
 
 class Chat extends Component {
   state = {
     user: auth().currentUser,
     chats: [],
     content: "",
+    author: "",
     readError: null,
     writeError: null,
   };
@@ -54,13 +60,10 @@ class Chat extends Component {
       <div>
         <div className="chats">
           {this.state.chats.map((chat) => {
-            return (
-              <p className="chat__bubble" key={chat.timestamp}>
-                {chat.content}
-              </p>
-            );
+            return <Message {...chat} key={chat.timestamp} />;
           })}
         </div>
+        <Test text="text text tex " numbr={"wdadwa"} />
         {/* message form */}
         <form onSubmit={this.handleSubmit}>
           <input onChange={this.handleChange} value={this.state.content} />

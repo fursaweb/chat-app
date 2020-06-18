@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Home from "./pages/Home";
 import Chat from "./pages/Chat";
+import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import { auth } from "./services/firebase";
@@ -77,6 +78,11 @@ class App extends Component {
             path="/chat"
             authenticated={this.state.authenticated}
             component={Chat}
+          ></PrivateRoute>
+          <PrivateRoute
+            path="/profile"
+            authenticated={this.state.authenticated}
+            component={Profile}
           ></PrivateRoute>
           <PublicRoute
             path="/signup"
