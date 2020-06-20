@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { signin, signInWithGoogle, signInWithGitHub } from "../helpers/auth";
+import { db, auth } from "../services/firebase";
+import { getNameFromEmail } from "../helpers/utils";
 
 class Login extends Component {
   state = {
@@ -24,6 +26,14 @@ class Login extends Component {
       this.setState({
         error: error.message,
       });
+    }
+  };
+
+  googleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      this.setState({ error: error.message });
     }
   };
 
@@ -57,6 +67,10 @@ class Login extends Component {
           <div>
             {this.state.error ? <p>{this.state.error}</p> : null}
             <button type="submit">Login</button>
+            <p>Or</p>
+            <button onClick={this.googleSignIn} type="button">
+              Sign in with Google
+            </button>
           </div>
           <hr />
           <p>

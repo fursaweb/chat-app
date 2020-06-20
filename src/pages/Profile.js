@@ -75,7 +75,27 @@ class Profile extends Component {
               : getNameFromEmail(this.state.user.userEmail)}
           </figcaption>
         </figure>
-        <form action="" className="profile__form" onSubmit={this.handleSubmit}>
+        <ul className="menu">
+          <li className="menu__item">
+            <span>Home</span>
+          </li>
+          <li className="menu__item">
+            <span>Chat</span>
+          </li>
+          <li className="menu__item">
+            <span>Contact</span>
+          </li>
+          <li className="menu__item">
+            <span>Notifications</span>
+          </li>
+          <li className="menu__item">
+            <span>Calendar</span>
+          </li>
+          <li className="menu__item">
+            <span>Settings</span>
+          </li>
+        </ul>
+        {/* <form action="" className="profile__form" onSubmit={this.handleSubmit}>
           <label htmlFor="name">
             <span>Name </span>
             <input
@@ -95,7 +115,7 @@ class Profile extends Component {
             />
           </label>
           <button>Submit</button>
-        </form>
+        </form> */}
       </div>
     );
   }

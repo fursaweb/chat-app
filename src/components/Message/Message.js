@@ -9,8 +9,10 @@ const Message = (props) => {
   return (
     <div className="message__wrappper">
       <p className="chat__bubble">{props.content}</p>
-      <button onClick={updateData}>U</button>
-      <button>X</button>
+      <button className="message__btn" onClick={updateData}>
+        U
+      </button>
+      <button className="message__btn">X</button>
     </div>
   );
 };

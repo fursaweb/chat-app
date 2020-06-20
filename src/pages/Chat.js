@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import { auth } from "../services/firebase";
 import { db } from "../services/firebase";
-import { functionFirebase } from "../services/firebase";
 
 //Components
 import Message from "../components/Message/Message";
-import Test from "../components/Test.tsx";
 
 class Chat extends Component {
   state = {
@@ -57,21 +55,40 @@ class Chat extends Component {
 
   render() {
     return (
-      <div>
-        <div className="chats">
+      <div className="chat-wrapper">
+        <div className="chat__header">
+          <figure className="chat__bio">
+            <img src="" alt="" className="chat__userpic" />
+            <figcaption className="chat__info">
+              <span className="chat__name">Name Name</span>
+              <span className="chat__extra">last online 5 hours ago</span>
+            </figcaption>
+          </figure>
+          <div className="chat__btn-set">
+            <button className="chat__btn chat__btn--white">+</button>
+            <button className="chat__btn chat__btn--white">...</button>
+          </div>
+        </div>
+        <div className="chat__body">
           {this.state.chats.map((chat) => {
             return <Message {...chat} key={chat.timestamp} />;
           })}
         </div>
-        <Test text="text text tex " numbr={"wdadwa"} />
-        {/* message form */}
-        <form onSubmit={this.handleSubmit}>
-          <input onChange={this.handleChange} value={this.state.content} />
-          {this.state.error ? <p>{this.state.writeError}</p> : null}
-          <button type="submit">Send</button>
-        </form>
-        <div>
-          Login in as: <strong>{this.state.user.email}</strong>
+        <div className="chat__footer">
+          <form className="chat__form" onSubmit={this.handleSubmit}>
+            <input
+              placeholder="Type a message here"
+              onChange={this.handleChange}
+              value={this.state.content}
+            />
+            {this.state.error ? <p>{this.state.writeError}</p> : null}
+            <button
+              type="submit"
+              className="chat__btn chat__btn--blue chat__btn--sm"
+            >
+              ~
+            </button>
+          </form>
         </div>
       </div>
     );
