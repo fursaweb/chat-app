@@ -22,9 +22,9 @@ class Signup extends Component {
     this.setState({ error: "" });
     try {
       await signup(this.state.email, this.state.password).then((user) =>
-        db.ref("users/" + getNameFromEmail(auth().currentUser.email)).set({
+        db.ref("users/" + auth().currentUser.uid).set({
           userEmail: auth().currentUser.email,
-          userName: "",
+          userName: getNameFromEmail(auth().currentUser.email),
           userId: auth().currentUser.uid,
           userPic: "",
         })
@@ -38,14 +38,14 @@ class Signup extends Component {
 
   googleSignIn = async () => {
     try {
-      await signInWithGoogle().then((user) =>
-        db.ref("users/" + getNameFromEmail(auth().currentUser.email)).set({
+      await signInWithGoogle().then(() => {
+        db.ref("users/" + auth().currentUser.uid).set({
           userEmail: auth().currentUser.email,
-          userName: "",
+          userName: getNameFromEmail(auth().currentUser.email),
           userId: auth().currentUser.uid,
           userPic: "",
-        })
-      );
+        });
+      });
     } catch (error) {
       this.setState({ error: error.message });
     }

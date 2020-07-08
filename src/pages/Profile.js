@@ -27,11 +27,9 @@ class Profile extends Component {
     e.preventDefault();
     this.setState({ writeError: null });
     try {
-      await db
-        .ref("users/" + getNameFromEmail(this.state.user.userEmail))
-        .update({
-          userName: getFullName(this.state.name, this.state.surname),
-        });
+      await db.ref("users/" + auth().currentUser.uid).update({
+        userName: getFullName(this.state.name, this.state.surname),
+      });
       this.setState({
         name: "",
         surname: "",
@@ -44,13 +42,21 @@ class Profile extends Component {
     }
   };
 
+  logout = () => {
+    auth()
+      .signOut()
+      .then(() => {
+        console.log("signout");
+      });
+  };
+
   async componentDidMount() {
     this.setState({
       readError: null,
     });
     try {
       await db
-        .ref("users/" + getNameFromEmail(auth().currentUser.email))
+        .ref("users/" + auth().currentUser.uid)
         .once("value", (snapshot) => {
           let user = snapshot.val();
           this.setState({ user, isLoading: false });
@@ -95,6 +101,7 @@ class Profile extends Component {
             <span>Settings</span>
           </li>
         </ul>
+        <span onClick={this.logout}>Logout</span>
         {/* <form action="" className="profile__form" onSubmit={this.handleSubmit}>
           <label htmlFor="name">
             <span>Name </span>

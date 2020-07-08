@@ -5,6 +5,8 @@ import { db } from "../services/firebase";
 //Components
 import Message from "../components/Message/Message";
 
+import { getNameFromEmail } from "../helpers/utils";
+
 class Chat extends Component {
   state = {
     user: auth().currentUser,
@@ -13,22 +15,35 @@ class Chat extends Component {
     author: "",
     readError: null,
     writeError: null,
+    chat: {},
   };
 
-  async componentDidMount() {
-    this.setState({
-      readError: null,
-    });
+  componentDidMount() {}
+
+  // oneTimeFunc = async () => {
+  //   try {
+  //     await db.ref("users/" + auth().currentUser.uid).set({
+  //       userEmail: auth().currentUser.email,
+  //       userName: getNameFromEmail(auth().currentUser.email),
+  //       userId: auth().currentUser.uid,
+  //       userPic: "",
+  //     });
+  //   } catch (error) {
+  //     this.setState({ error: error.message });
+  //   }
+  // };
+
+  async componentDidUpdate(prevProps) {
     try {
-      db.ref("chats").on("value", (snapshot) => {
-        let chats = [];
-        snapshot.forEach((snap) => {
-          chats.push(snap.val());
+      await db
+        .ref(`chats/${this.props.actualChatKey}`)
+        .on("value", (snapshot) => {
+          if (this.props.actualChatKey !== prevProps.actualChatKey) {
+            this.setState({ chat: snapshot.val() });
+          }
         });
-        this.setState({ chats });
-      });
     } catch (error) {
-      this.setState({ readError: error.message });
+      console.log(error);
     }
   }
 
@@ -54,13 +69,16 @@ class Chat extends Component {
   };
 
   render() {
+    console.log(this.props);
     return (
       <div className="chat-wrapper">
         <div className="chat__header">
           <figure className="chat__bio">
             <img src="" alt="" className="chat__userpic" />
             <figcaption className="chat__info">
-              <span className="chat__name">Name Name</span>
+              <span className="chat__name">
+                {this.state.chat.title || "choose chat"}
+              </span>
               <span className="chat__extra">last online 5 hours ago</span>
             </figcaption>
           </figure>
